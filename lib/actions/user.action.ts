@@ -7,13 +7,16 @@ import { handleError } from "../utils";
 import Event from "../database/models/event.model";
 import { revalidatePath } from "next/cache";
 
-export const createUser = async (user: CreateUserParams) => {
+export async function createUser(user: CreateUserParams) {
   try {
     await connectToDatabase();
+
     const newUser = await User.create(user);
     return JSON.parse(JSON.stringify(newUser));
-  } catch (error) {}
-};
+  } catch (error) {
+    handleError(error);
+  }
+}
 
 export async function getUserById(userId: string) {
   try {
